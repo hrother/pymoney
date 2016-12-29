@@ -11,7 +11,7 @@ class Money(object):
 
     The :attr:`amount` of :class:`Money` is rounded using
     :attr:`rounding_method` with :attr:`cent_factor`. Which default to
-    :attr:`rounding_method` = decimal.ROUND_HALF_EVEN and 
+    :attr:`rounding_method` = decimal.ROUND_HALF_EVEN and
     :attr:`cent_factor` = '.01'
 
     :param amount: of money
@@ -39,3 +39,14 @@ class Money(object):
         return '{}(amount={!r}, currency={!r})'.format(
                 self.__class__.__name__,
                 self.amount, self.currency)
+
+    def __eq__(self, other):
+        if not isinstance(other, type(self)):
+            return False
+        return self.amount == other.amount and self.currency == other.currency
+
+    def __ne__(self, other):
+        return not self == other
+
+    def __hash__(self):
+        return hash((self.amount, self.currency))
