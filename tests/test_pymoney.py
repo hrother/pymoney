@@ -234,3 +234,18 @@ def test_using_sum_on_money():
     m1 = Money(D('21'), 'EUR')
     m2 = Money(D('21'), 'EUR')
     assert Money(D('42'), 'EUR') == sum([m1, m2])
+
+
+def test_subtraction_of_money():
+    assert Money(D('21'), 'EUR') == (
+            Money(D('42'), 'EUR') - Money(D('21'), 'EUR'))
+
+
+def test_subtraction_of_money_with_different_currencies_raises():
+    with pytest.raises(CurrencyMismatch):
+        Money(D('42'), 'EUR') - Money(D('42'), 'USD')
+
+
+def test_subtraction_of_money_with_other_types_raises():
+    with pytest.raises(UnsupportedOperatorType):
+        Money(D('42'), 'EUR') - D('42')

@@ -86,6 +86,11 @@ class Money(object):
         else:
             return self.__add__(other)
 
+    def __sub__(self, other):
+        self._raise_for_unsupported_type(other, '-')
+        self._raise_for_different_currency(other)
+        return Money(self.amount - other.amount, self.currency)
+
     def _raise_for_different_currency(self, other):
         if self.currency != other.currency:
             raise CurrencyMismatch(
