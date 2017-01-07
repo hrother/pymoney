@@ -12,7 +12,11 @@ import pytest
 from decimal import Decimal as D
 
 from pymoney import pymoney
-from pymoney.exceptions import InvalidAmount
+from pymoney.exceptions import (
+        InvalidAmount,
+        CurrencyMismatch,
+        UnsupportedOperatorType,
+)
 
 
 def test_money_init_decimal_amount():
@@ -117,3 +121,92 @@ def test_money_which_is_unequal_has_different_hash():
     m1 = pymoney.Money(D('42'), 'EUR')
     m2 = pymoney.Money(D('21'), 'EUR')
     assert hash(m1) != hash(m2)
+
+
+def test_money_greater_than():
+    m1 = pymoney.Money(D('42'), 'EUR')
+    m2 = pymoney.Money(D('21'), 'EUR')
+    assert m1 > m2
+
+
+def test_money_not_greater_than():
+    m1 = pymoney.Money(D('21'), 'EUR')
+    m2 = pymoney.Money(D('42'), 'EUR')
+    assert not m1 > m2
+
+
+def test_money_not_greater_than_equal():
+    m1 = pymoney.Money(D('42'), 'EUR')
+    m2 = pymoney.Money(D('42'), 'EUR')
+    assert not m1 > m2
+
+
+def test_money_greater_or_equal_than():
+    m1 = pymoney.Money(D('42'), 'EUR')
+    m2 = pymoney.Money(D('42'), 'EUR')
+    assert m1 >= m2
+
+
+def test_money_not_greater_or_equal_than():
+    m1 = pymoney.Money(D('42'), 'EUR')
+    m2 = pymoney.Money(D('21'), 'EUR')
+    assert not m2 >= m1
+
+
+def test_money_less_than():
+    m1 = pymoney.Money(D('42'), 'EUR')
+    m2 = pymoney.Money(D('21'), 'EUR')
+    assert m2 < m1
+
+
+def test_money_not_less_than():
+    m1 = pymoney.Money(D('42'), 'EUR')
+    m2 = pymoney.Money(D('21'), 'EUR')
+    assert not m1 < m2
+
+
+def test_money_not_less_than_equal():
+    m1 = pymoney.Money(D('42'), 'EUR')
+    m2 = pymoney.Money(D('42'), 'EUR')
+    assert not m1 < m2
+
+
+def test_money_less_than_or_equal_with_equal():
+    m1 = pymoney.Money(D('42'), 'EUR')
+    m2 = pymoney.Money(D('42'), 'EUR')
+    assert m1 <= m2
+
+
+def test_money_less_than_or_equal_with_less():
+    m1 = pymoney.Money(D('21'), 'EUR')
+    m2 = pymoney.Money(D('42'), 'EUR')
+    assert m1 <= m2
+
+
+def test_money_not_less_than_or_equal():
+    m1 = pymoney.Money(D('42'), 'EUR')
+    m2 = pymoney.Money(D('21'), 'EUR')
+    assert not m1 <= m2
+
+
+def test_comparing_money_with_different_currencies_raises():
+    with pytest.raises(CurrencyMismatch):
+        pymoney.Money(D('42'), 'EUR') > pymoney.Money(D('84'), 'USD')
+    with pytest.raises(CurrencyMismatch):
+        pymoney.Money(D('42'), 'USD') >= pymoney.Money(D('84'), 'EUR')
+    with pytest.raises(CurrencyMismatch):
+        pymoney.Money(D('42'), 'USD') < pymoney.Money(D('21'), 'EUR')
+    with pytest.raises(CurrencyMismatch):
+        pymoney.Money(D('42'), 'USD') <= pymoney.Money(D('21'), 'EUR')
+
+
+def test_comparing_money_with_different_type_raises():
+    with pytest.raises(UnsupportedOperatorType):
+        pymoney.Money(D('42'), 'EUR') > 21
+    with pytest.raises(UnsupportedOperatorType):
+        pymoney.Money(D('42'), 'EUR') >= D('42')
+    with pytest.raises(UnsupportedOperatorType):
+        pymoney.Money(D('42'), 'EUR') < 21
+    with pytest.raises(UnsupportedOperatorType):
+        pymoney.Money(D('42'), 'EUR') <= 42
+

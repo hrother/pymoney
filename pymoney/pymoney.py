@@ -2,7 +2,11 @@
 import decimal
 from decimal import Decimal as D
 
-from .exceptions import InvalidAmount
+from .exceptions import (
+        InvalidAmount,
+        CurrencyMismatch,
+        UnsupportedOperatorType,
+)
 
 
 class Money(object):
@@ -50,3 +54,35 @@ class Money(object):
 
     def __hash__(self):
         return hash((self.amount, self.currency))
+
+    def __gt__(self, other):
+        self._raise_for_unsupported_type(other, '>')
+        self._raise_for_different_currency(other)
+        return self.amount > other.amount
+
+    def __ge__(self, other):
+        self._raise_for_unsupported_type(other, '>=')
+        self._raise_for_different_currency(other)
+        return self.amount >= other.amount
+
+    def __lt__(self, other):
+        self._raise_for_unsupported_type(other, '<')
+        self._raise_for_different_currency(other)
+        return self.amount < other.amount
+
+    def __le__(self, other):
+        self._raise_for_unsupported_type(other, '<=')
+        self._raise_for_different_currency(other)
+        return self.amount <= other.amount
+
+    def _raise_for_different_currency(self, other):
+        if self.currency != other.currency:
+            raise CurrencyMismatch(
+                'Not possible to perform operation with different currencies')
+
+    def _raise_for_unsupported_type(self, other, operator):
+        if not isinstance(other, type(self)):
+            raise UnsupportedOperatorType(
+                'Operator {} is not supported for {} and {}'.format(
+                    operator, type(self), type(other))
+                )
