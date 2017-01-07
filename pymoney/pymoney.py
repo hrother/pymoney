@@ -41,8 +41,8 @@ class Money(object):
 
     def __repr__(self):
         return '{}(amount={!r}, currency={!r})'.format(
-                self.__class__.__name__,
-                self.amount, self.currency)
+            self.__class__.__name__,
+            self.amount, self.currency)
 
     def __eq__(self, other):
         if not isinstance(other, type(self)):
