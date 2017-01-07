@@ -228,3 +228,9 @@ def test_addition_of_money_with_different_currencie_raises():
 def test_addition_of_money_with_other_types_raises():
     with pytest.raises(UnsupportedOperatorType):
         pymoney.Money(D('21'), 'EUR') + D('21')
+
+
+def test_using_sum_on_money():
+    m1 = pymoney.Money(D('21'), 'EUR')
+    m2 = pymoney.Money(D('21'), 'EUR')
+    assert pymoney.Money(D('42'), 'EUR') == sum([m1, m2])

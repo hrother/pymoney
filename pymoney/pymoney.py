@@ -80,6 +80,12 @@ class Money(object):
         self._raise_for_different_currency(other)
         return Money(self.amount + other.amount, self.currency)
 
+    def __radd__(self, other):
+        if other == 0:
+            return self
+        else:
+            return self.__add__(other)
+
     def _raise_for_different_currency(self, other):
         if self.currency != other.currency:
             raise CurrencyMismatch(
