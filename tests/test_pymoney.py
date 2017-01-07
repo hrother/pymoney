@@ -210,3 +210,21 @@ def test_comparing_money_with_different_type_raises():
     with pytest.raises(UnsupportedOperatorType):
         pymoney.Money(D('42'), 'EUR') <= 42
 
+
+def test_addition_of_money():
+    m1 = pymoney.Money(D('21'), 'EUR')
+    m2 = pymoney.Money(D('21'), 'EUR')
+    expected = pymoney.Money(D('42'), 'EUR')
+    assert m1 + m2 == expected
+
+
+def test_addition_of_money_with_different_currencie_raises():
+    m1 = pymoney.Money(D('21'), 'EUR')
+    m2 = pymoney.Money(D('21'), 'USD')
+    with pytest.raises(CurrencyMismatch):
+        m1 + m2
+
+
+def test_addition_of_money_with_other_types_raises():
+    with pytest.raises(UnsupportedOperatorType):
+        pymoney.Money(D('21'), 'EUR') + D('21')
