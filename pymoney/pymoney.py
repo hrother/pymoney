@@ -91,6 +91,16 @@ class Money(object):
         self._raise_for_different_currency(other)
         return Money(self.amount - other.amount, self.currency)
 
+    def __mul__(self, other):
+        if not isinstance(other, D):
+            raise UnsupportedOperatorType(other, '*')
+        return Money(self.amount * other, self.currency)
+
+    def __rmul__(self, other):
+        if not isinstance(other, D):
+            raise UnsupportedOperatorType(other, '*')
+        return self * other
+
     def _raise_for_different_currency(self, other):
         if self.currency != other.currency:
             raise CurrencyMismatch(

@@ -249,3 +249,18 @@ def test_subtraction_of_money_with_different_currencies_raises():
 def test_subtraction_of_money_with_other_types_raises():
     with pytest.raises(UnsupportedOperatorType):
         Money(D('42'), 'EUR') - D('42')
+
+
+def test_multiplication_of_money_with_money_raises():
+    with pytest.raises(UnsupportedOperatorType):
+        Money(D('21'), 'EUR') * Money(D('2'), 'EUR')
+
+
+def test_multiplication_of_money_with_decimal():
+    assert Money(D('42'), 'EUR') == Money(D('21'), 'EUR') * D('2')
+    assert Money(D('42'), 'EUR') == D('2') * Money(D('21'), 'EUR')
+
+
+def test_multiplication_with_non_decimal_raises():
+    with pytest.raises(UnsupportedOperatorType):
+        Money(D('21'), 'EUR') * 2
