@@ -109,6 +109,16 @@ class Money(object):
             raise UnsupportedOperatorType(other, '*')
         return self * other
 
+    def __truediv__(self, other):
+        if isinstance(other, Money):
+            self._raise_for_different_currency(other)
+            if other.amount == D('0'):
+                raise ZeroDivisionError()
+            return self.amount / other.amount
+        elif other == D('0'):
+            raise ZeroDivisionError()
+        return Money(self.amount / other, self.currency)
+
     def _raise_for_different_currency(self, other):
         if self.currency != other.currency:
             raise CurrencyMismatch(

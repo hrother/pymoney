@@ -13,9 +13,9 @@ from decimal import Decimal as D
 
 from pymoney.pymoney import Money
 from pymoney.exceptions import (
-        InvalidAmount,
-        CurrencyMismatch,
-        UnsupportedOperatorType,
+    InvalidAmount,
+    CurrencyMismatch,
+    UnsupportedOperatorType,
 )
 
 
@@ -264,3 +264,25 @@ def test_multiplication_of_money_with_decimal():
 def test_multiplication_with_non_decimal_raises():
     with pytest.raises(UnsupportedOperatorType):
         Money(D('21'), 'EUR') * 2
+
+
+def test_division_of_money_with_money():
+    assert D('2') == Money(D('42'), 'EUR') / Money(D('21'), 'EUR')
+
+
+def test_division_by_zero_raises_exception():
+    with pytest.raises(ZeroDivisionError):
+        Money(D('42'), 'EUR') / Money(D('0'), 'EUR')
+
+
+def test_division_by_one_returns_money():
+    assert Money(D('42'), 'EUR') == Money(D('42'), 'EUR') / D('1')
+
+
+def test_division_by_decimal_returns_money():
+    assert Money(D('8.4'), 'EUR') == Money(D('42'), 'EUR') / D('5')
+
+
+def test_division_with_different_currency_raises():
+    with pytest.raises(CurrencyMismatch):
+        Money(D('42'), 'EUR') / Money(D('21'), 'USD')
