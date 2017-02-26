@@ -3,9 +3,9 @@ import decimal
 from decimal import Decimal as D
 
 from .exceptions import (
-        InvalidAmount,
-        CurrencyMismatch,
-        UnsupportedOperatorType,
+    InvalidAmount,
+    CurrencyMismatch,
+    UnsupportedOperatorType,
 )
 
 
@@ -18,16 +18,24 @@ class Money(object):
     :attr:`rounding_method` = decimal.ROUND_HALF_EVEN and
     :attr:`cent_factor` = '.01'
 
-    :param amount: of money
+    :param amount: The value of the instance. The given `amount` will be
+    converted into an :class:`decimal.Decimal` and rounded.
     :type amount: numeric
-    :param str currency: In which the given `amount` is denoted.
-
+    :param str currency: string representation of the currency country
+    code.
     """
 
     cent_factor = '.01'
     rounding_method = decimal.ROUND_HALF_EVEN
 
     def __init__(self, amount, currency):
+        """Create a :class:`Money` instance with given `amount` and `currency`.
+
+        :param amount: The value of the instance. The given `amount` will be
+        converted into an :class:`decimal.Decimal` and rounded.
+        :param str currency: string representation of the currency country
+        code.
+        """
         try:
             amount = D(amount)
         except decimal.InvalidOperation:
@@ -41,8 +49,8 @@ class Money(object):
 
     def __repr__(self):
         return '{}(amount={!r}, currency={!r})'.format(
-                self.__class__.__name__,
-                self.amount, self.currency)
+            self.__class__.__name__,
+            self.amount, self.currency)
 
     def __eq__(self, other):
         if not isinstance(other, type(self)):
@@ -74,6 +82,42 @@ class Money(object):
         self._raise_for_unsupported_type(other, '<=')
         self._raise_for_different_currency(other)
         return self.amount <= other.amount
+
+    def __add__(self, other):
+        self._raise_for_unsupported_type(other, '+')
+        self._raise_for_different_currency(other)
+        return Money(self.amount + other.amount, self.currency)
+
+    def __radd__(self, other):
+        if other == 0:
+            return self
+        else:
+            return self.__add__(other)
+
+    def __sub__(self, other):
+        self._raise_for_unsupported_type(other, '-')
+        self._raise_for_different_currency(other)
+        return Money(self.amount - other.amount, self.currency)
+
+    def __mul__(self, other):
+        if not isinstance(other, D):
+            raise UnsupportedOperatorType(other, '*')
+        return Money(self.amount * other, self.currency)
+
+    def __rmul__(self, other):
+        if not isinstance(other, D):
+            raise UnsupportedOperatorType(other, '*')
+        return self * other
+
+    def __truediv__(self, other):
+        if isinstance(other, Money):
+            self._raise_for_different_currency(other)
+            if other.amount == D('0'):
+                raise ZeroDivisionError()
+            return self.amount / other.amount
+        elif other == D('0'):
+            raise ZeroDivisionError()
+        return Money(self.amount / other, self.currency)
 
     def _raise_for_different_currency(self, other):
         if self.currency != other.currency:
