@@ -3,9 +3,9 @@ import decimal
 from decimal import Decimal as D
 
 from .exceptions import (
-        InvalidAmount,
-        CurrencyMismatch,
-        UnsupportedOperatorType,
+    InvalidAmount,
+    CurrencyMismatch,
+    UnsupportedOperatorType,
 )
 
 
@@ -18,16 +18,24 @@ class Money(object):
     :attr:`rounding_method` = decimal.ROUND_HALF_EVEN and
     :attr:`cent_factor` = '.01'
 
-    :param amount: of money
+    :param amount: The value of the instance. The given `amount` will be
+    converted into an :class:`decimal.Decimal` and rounded.
     :type amount: numeric
-    :param str currency: In which the given `amount` is denoted.
-
+    :param str currency: string representation of the currency country
+    code.
     """
 
     cent_factor = '.01'
     rounding_method = decimal.ROUND_HALF_EVEN
 
     def __init__(self, amount, currency):
+        """Create a :class:`Money` instance with given `amount` and `currency`.
+
+        :param amount: The value of the instance. The given `amount` will be
+        converted into an :class:`decimal.Decimal` and rounded.
+        :param str currency: string representation of the currency country
+        code.
+        """
         try:
             amount = D(amount)
         except decimal.InvalidOperation:
