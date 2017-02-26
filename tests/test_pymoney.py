@@ -11,8 +11,8 @@ Tests for `pymoney` module.
 import pytest
 from decimal import Decimal as D
 
-from pymoney.pymoney import Money
-from pymoney.exceptions import (
+from pymoney import Money
+from pymoney import (
     InvalidAmount,
     CurrencyMismatch,
     UnsupportedOperatorType,
