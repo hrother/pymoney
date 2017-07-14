@@ -10,16 +10,19 @@ with open('HISTORY.rst') as history_file:
     history = history_file.read()
 
 requirements = [
-    # TODO: put package requirements here
+    # No requirements only standard lib modules
 ]
 
 test_requirements = [
-    # TODO: put package test requirements here
+    'flake8',
+    'pytest',
+    'coverage',
+    'pytest-cov'
 ]
 
 setup(
     name='pymoney',
-    version='0.1.0',
+    version='0.1.1',
     description=("Implementation of the Money pattern from Patterns of"
                  " enterprise application architecture by Martin Fowler"),
     long_description=readme + '\n\n' + history,

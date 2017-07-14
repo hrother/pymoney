@@ -38,8 +38,8 @@ __license__ = 'MIT'
 __copyright__ = 'Copyright 2017 Holger Rother'
 __email__ = 'hrother@hrother.org'
 
-from .pymoney import Money
-from .exceptions import (
+from .pymoney import Money # noqa
+from .exceptions import ( # noqa
     MoneyError, InvalidAmount, CurrencyMismatch,
     UnsupportedOperatorType
 )
