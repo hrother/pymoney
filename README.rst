@@ -3,9 +3,6 @@ pyMoney
 ===============================
 
 
-.. image:: https://img.shields.io/pypi/v/pymoney.svg
-        :target: https://pypi.python.org/pypi/pymoney
-
 .. image:: https://img.shields.io/travis/hrother/pymoney.svg
         :target: https://travis-ci.org/hrother/pymoney
 
@@ -22,7 +19,6 @@ Implementation of the Money pattern from Patterns of enterprise application arch
 
 
 * Free software: MIT license
-* Documentation: https://pymoney.readthedocs.io.
 
 
 Features

@@ -10,11 +10,14 @@ with open('HISTORY.rst') as history_file:
     history = history_file.read()
 
 requirements = [
-    # TODO: put package requirements here
+    # No requirements only standard lib modules
 ]
 
 test_requirements = [
-    # TODO: put package test requirements here
+    'flake8',
+    'pytest',
+    'coverage',
+    'pytest-cov'
 ]
 
 setup(
