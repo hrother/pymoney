@@ -13,13 +13,6 @@ requirements = [
     # No requirements only standard lib modules
 ]
 
-test_requirements = [
-    'flake8',
-    'pytest',
-    'coverage',
-    'pytest-cov'
-]
-
 setup(
     name='pymoney',
     version='0.1.1',
@@ -51,6 +44,4 @@ setup(
         'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
     ],
-    test_suite='tests',
-    tests_require=test_requirements
 )
