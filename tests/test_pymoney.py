@@ -270,6 +270,10 @@ def test_division_of_money_with_money():
     assert D('2') == Money(D('42'), 'EUR') / Money(D('21'), 'EUR')
 
 
+def test_devision_of_money_with_money_fraction():
+    assert D('8.4') == Money(D('42'), 'EUR') / Money(D('5'), 'EUR')
+
+
 def test_division_by_zero_raises_exception():
     with pytest.raises(ZeroDivisionError):
         Money(D('42'), 'EUR') / Money(D('0'), 'EUR')
