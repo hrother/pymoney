@@ -32,7 +32,7 @@ Basic usage:
 """
 
 __title__ = 'pymoney'
-__version__ = '0.1.0'
+__version__ = '0.1.2'
 __author__ = 'Holger Rother'
 __license__ = 'MIT'
 __copyright__ = 'Copyright 2017 Holger Rother'

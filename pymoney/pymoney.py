@@ -119,6 +119,8 @@ class Money(object):
             raise ZeroDivisionError()
         return Money(self.amount / other, self.currency)
 
+    __div__ = __truediv__
+
     def _raise_for_different_currency(self, other):
         if self.currency != other.currency:
             raise CurrencyMismatch(
